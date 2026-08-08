@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 # 🛒 Session-Based E-Commerce Recommendation System
 
@@ -525,4 +524,4 @@ The defaults here (embedding_dim=64, small synthetic data) are tuned to train
 in seconds/minutes on CPU so you can verify the whole pipeline end-to-end.
 For a "real" run, bump `--embedding_dim 128 --hidden_dim 128`, use a real
 session dataset (e.g. RetailRocket), and train on GPU.
->>>>>>> 15947c771cff675a28a40292660babaacb739448
+
