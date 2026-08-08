@@ -376,12 +376,12 @@ python -m src.serve --checkpoint models/gru4rec.pt --index models/products.index
 ```
 
 Then query the API:
->>>>>>> 15947c771cff675a28a40292660babaacb739448
+
 
 ```bash
 curl -X POST http://localhost:5000/recommend \
   -H "Content-Type: application/json" \
-<<<<<<< HEAD
+
   -d '{"session":[100,200,300,400,500]}'
 ```
 
