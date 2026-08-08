@@ -15,12 +15,15 @@ class HybridRecommender:
     """
 
     def __init__(self, model, product_features: dict, device="cpu",
-                 rnn_weight=0.7, content_weight=0.3, warm_threshold=2):
+                 rnn_weight=0.7, content_weight=0.3, warm_threshold=2,
+                 popularity_rank=None):
         """
         Args:
             model: trained GRU4REC (or compatible) model.
             product_features: dict[product_idx] -> {category, brand, price, rating}
             warm_threshold: min session length to be treated as a "warm" user.
+            popularity_rank: optional list[int] of vocab indices ordered
+                most-popular-first, used as the empty-session fallback.
         """
         self.model = model
         self.product_features = product_features
@@ -29,6 +32,7 @@ class HybridRecommender:
         self.content_weight = content_weight
         self.warm_threshold = warm_threshold
         self.num_products = model.fc.out_features
+        self.popularity_rank = popularity_rank
 
     def recommend(self, session_items, k=10):
         """session_items: list[int] of vocab indices in current session."""
@@ -82,8 +86,13 @@ class HybridRecommender:
         return similarity
 
     def get_popular_products(self, k=10):
-        """Fallback for truly empty sessions: return arbitrary top products by index.
-        In production, replace with a precomputed popularity ranking from event counts."""
+        """Fallback for truly empty sessions.
+
+        Uses a real popularity ranking (list of vocab indices, most-popular
+        first) when provided; otherwise falls back to the first-k indices.
+        """
+        if self.popularity_rank is not None:
+            return np.array(self.popularity_rank[:k], dtype=np.int64)
         return np.arange(min(k, self.num_products))
 
 

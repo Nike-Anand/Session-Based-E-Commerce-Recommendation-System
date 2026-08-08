@@ -53,6 +53,9 @@ def evaluate_loss(model, loader, criterion, device):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", type=str, default=CONFIG.events_path)
+    parser.add_argument("--retail", action="store_true",
+                        help="Use the RetailRocket canonical-schema events.csv "
+                             "(data/retail_rocket_events.csv) and larger default dims.")
     parser.add_argument("--epochs", type=int, default=CONFIG.epochs)
     parser.add_argument("--batch_size", type=int, default=CONFIG.batch_size)
     parser.add_argument("--lr", type=float, default=CONFIG.lr)
@@ -60,6 +63,15 @@ def main():
     parser.add_argument("--hidden_dim", type=int, default=CONFIG.hidden_dim)
     parser.add_argument("--checkpoint", type=str, default=CONFIG.checkpoint_path)
     args = parser.parse_args()
+
+    if args.retail:
+        args.data = os.path.join(os.path.dirname(CONFIG.events_path), "retail_rocket_events.csv")
+        # Larger model for the ~235K-item RetailRocket catalog.
+        if args.embedding_dim == CONFIG.embedding_dim:
+            args.embedding_dim = 128
+        if args.hidden_dim == CONFIG.hidden_dim:
+            args.hidden_dim = 128
+        print("Using RetailRocket dataset:", args.data)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")

@@ -132,9 +132,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--checkpoint", type=str, default=CONFIG.checkpoint_path)
     parser.add_argument("--data", type=str, default=CONFIG.events_path)
+    parser.add_argument("--retail", action="store_true",
+                        help="Use the RetailRocket canonical-schema events.csv "
+                             "(data/retail_rocket_events.csv).")
     parser.add_argument("--build_index", action="store_true")
     parser.add_argument("--nlist", type=int, default=CONFIG.faiss_nlist)
     args = parser.parse_args()
+
+    if args.retail:
+        args.data = os.path.join(os.path.dirname(CONFIG.events_path), "retail_rocket_events.csv")
+        print("Using RetailRocket dataset:", args.data)
 
     device = torch.device("cpu")
     model = load_model(args.checkpoint, device)
