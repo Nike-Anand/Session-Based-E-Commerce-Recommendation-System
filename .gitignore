@@ -1,0 +1,54 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache / bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+*.egg
+
+# Jupyter / notebook checkpoints
+.ipynb_checkpoints/
+
+# Data files (generated or large)
+data/*.csv
+data/*.zip
+data/archive/
+data/archive.zip
+!data/generate_synthetic_data.py
+!data/retail_rocket.py
+
+# Model artifacts
+models/*.pt
+models/*.index
+models/*.npy
+models/*.json
+!models/.gitkeep
+
+# Experiments output
+experiments/report.md
+experiments/*.log
+
+# Logs
+*.log
+serve_log.txt
+serve_stderr.txt
+serve_stdout.txt
+
+# Torch / large binaries
+*.whl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
